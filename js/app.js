@@ -16,8 +16,17 @@ const state = {
   currentFilter: 'All'
 };
 
-window.requestAnimationFrame(() => {
-  const main = document.querySelector('.todoapp');
-  const newMain = registry.renderRoot(main, state);
-  main.replaceWith(newMain);
-});
+const render = () => {
+  window.requestAnimationFrame(() => {
+    const main = document.querySelector('.todoapp');
+    const newMain = registry.renderRoot(main, state);
+    main.replaceWith(newMain);
+  });
+};
+
+window.setInterval(() => {
+  state.todos = getTodos();
+  render();
+}, 5000);
+
+render();
