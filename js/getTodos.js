@@ -2,7 +2,7 @@ const { faker } = window;
 
 const createElement = () => ({
   text: faker.random.words(2),
-  completed: faker.random.boolean()
+  completed: faker.datatype.boolean()
 });
 
 const repeat = (elementFactory, number) => {
@@ -15,6 +15,6 @@ const repeat = (elementFactory, number) => {
 };
 
 export default () => {
-  const howMany = faker.random.number(10);
+  const howMany = faker.datatype.number(10);
   return repeat(createElement, howMany);
 };
