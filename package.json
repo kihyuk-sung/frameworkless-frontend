@@ -1,0 +1,24 @@
+{
+  "name": "frameworkless-frontend",
+  "version": "1.0.0",
+  "description": "- http://www.yes24.com/Product/Goods/96639825",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kihyuk-sung/frameworkless-frontend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kihyuk-sung/frameworkless-frontend/issues"
+  },
+  "homepage": "https://github.com/kihyuk-sung/frameworkless-frontend#readme",
+  "dependencies": {
+    "todomvc-app-css": "^2.4.1",
+    "todomvc-common": "^1.0.5"
+  }
+}
