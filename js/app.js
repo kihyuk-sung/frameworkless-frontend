@@ -4,6 +4,7 @@ import todosView from './todos.js';
 import counterView from './counter.js';
 import filtersView from './filters.js';
 import registry from './registry.js';
+import applyDiff from './applyDiff.js';
 
 performance.init();
 
@@ -20,7 +21,7 @@ const render = () => {
   window.requestAnimationFrame(() => {
     const main = document.querySelector('.todoapp');
     const newMain = registry.renderRoot(main, state);
-    main.replaceWith(newMain);
+    applyDiff(document.body, main, newMain);
   });
 };
 
