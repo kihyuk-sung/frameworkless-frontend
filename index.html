@@ -13,6 +13,16 @@
   </head>
 
   <body>
+    <template id="todo-item">
+      <li>
+        <div class="view">
+          <input type="checkbox" class="toggle" />
+          <label></label>
+          <button class="destroy"></button>
+        </div>
+        <input type="text" class="edit" />
+      </li>
+    </template>
     <section class="todoapp">
       <header class="header">
         <h1>todos</h1>
