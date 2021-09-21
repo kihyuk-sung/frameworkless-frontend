@@ -11,11 +11,12 @@ const createNewTodoNode = () => {
     .cloneNode(true);
 };
 
-const getTodoElement = todo => {
+const getTodoElement = (todo, index, events) => {
   const {
     text,
     completed
   } = todo;
+
   const element = createNewTodoNode();
 
   element.querySelector('input.edit').value = text;
@@ -26,15 +27,21 @@ const getTodoElement = todo => {
     element.querySelector('input.toggle').checked = true;
   }
 
+  const handler = e => events.deleteItem(index);
+
+  element
+    .querySelector('button.destroy')
+    .addEventListener('click', handler);
+
   return element;
 };
 
-export default (targetElement, { todos }) => {
+export default (targetElement, { todos }, events) => {
   const newTodoList = targetElement.cloneNode(true);
   newTodoList.innerHTML = '';
 
   todos
-    .map(getTodoElement)
+    .map((todo, index) => getTodoElement(todo, index, events))
     .forEach(element => {
       newTodoList.appendChild(element);
     });
