@@ -1,5 +1,6 @@
 const ROUTE_PARAMETER_REGEXP = /:(\w+)/g;
 const URL_FRAGMENT_REGEXP = '([^\\/]+)';
+const NAV_A_SELECTOR = 'a[data-navigation]';
 const TICKTIME = 250;
 
 const extractUrlParams = (route, windowHash) => {
@@ -88,6 +89,13 @@ export default () => {
   router.start = () => {
     checkRoutes();
     window.setInterval(checkRoutes, TICKTIME);
+    document.body.addEventListener('click', e => {
+      const { target } = e;
+      if (target.matches(NAV_A_SELECTOR)) {
+        e.preventDefault();
+        router.navigate(target.href);
+      }
+    });
   };
 
   return router;
