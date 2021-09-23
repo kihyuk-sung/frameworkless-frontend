@@ -17,41 +17,10 @@ registry.add('todos', todosView);
 registry.add('counter', counterView);
 registry.add('filters', filtersView);
 
-const state = {
-  todos: [],
-  currentFilter: 'All'
-};
-
-const events = {
-  addItem: text => {
-    model.addItem(text);
-    render(model.getState());
-  },
-  updateItem: (index, text) => {
-    model.updateItem(index, text);
-    render(model.getState());
-  },
-  deleteItem: (index) => {
-    model.deleteItem(index);
-    render(model.getState());
-  },
-  toggleItemCompleted: (index) => {
-    model.toggleItemCompleted(index);
-    render(model.getState());
-  },
-  completeAll: () => {
-    model.completeAll();
-    render(model.getState());
-  },
-  clearCompleted: () => {
-    model.clearCompleted();
-    render(model.getState());
-  },
-  changeFilter: filter => {
-    model.changeFilter(filter);
-    render(model.getState());
-  }
-};
+const {
+  addChangeListener,
+  ...events
+} = model;
 
 const render = (state) => {
   window.requestAnimationFrame(() => {
@@ -61,4 +30,4 @@ const render = (state) => {
   });
 };
 
-render(model.getState());
+addChangeListener(render);
