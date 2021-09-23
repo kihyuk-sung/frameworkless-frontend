@@ -36,6 +36,7 @@ const events = {
     render();
   },
   toggleItemCompleted: (index) => {
+    debugger;
     const { completed } = state.todos[index];
     state.todos[index].completed = !completed;
     render();

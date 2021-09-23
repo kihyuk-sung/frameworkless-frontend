@@ -8,22 +8,11 @@
     <link rel="stylesheet" href="css/performance.css" />
     <link rel="favicon" href="favicon.ico" />
     <script src="node_modules/faker/dist/faker.js"></script>
-    <script type="module" src="index.js"></script>
+    <script type="module" src="js/app.js"></script>
     <title>Frameworkless Frontend</title>
   </head>
 
   <body>
-    <template id="footer">
-      <footer class="footer">
-        <span class="todo-count" data-component="counter"></span>
-        <ul class="filters" data-component="filters">
-          <li><a href="#/">All</a></li>
-          <li><a href="#/active">Active</a></li>
-          <li><a href="#/completed">Completed</a></li>
-        </ul>
-        <button class="clear-completed">Clear completed</button>
-      </footer>
-    </template>
     <template id="todo-item">
       <li>
         <div class="view">
@@ -47,12 +36,22 @@
         <section class="main">
           <input id="toggle-all" class="toggle-all" type="checkbox" />
           <label for="toggle-all">Mark all as complete</label>
-          <todomvc-list></todomvc-list>
+          <ul class="todo-list" data-component="todos"></ul>
         </section>
-        <todomvc-footer></todomvc-footer>
+        <footer class="footer">
+          <span class="todo-count" data-component="counter"></span>
+          <ul class="filters" data-component="filters">
+            <li><a href="#/">All</a></li>
+            <li><a href="#/active">Active</a></li>
+            <li><a href="#/completed">Completed</a></li>
+          </ul>
+          <button class="clear-completed">Clear completed</button>
+        </footer>
       </section>
     </template>
-    <todomvc-app></todomvc-app>
+    <div id="root">
+      <div data-component="app"></div>
+    </div>
     <footer class="info"><p>Double-click to edit a todo</p></footer>
   </body>
 </html>
