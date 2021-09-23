@@ -10,17 +10,14 @@ const INITIAL_STATE = {
 };
 
 export default (initialState = INITIAL_STATE) => {
-  const state = cloneDeep(initialState);
+  const state = observableFactory(initialState);
 
   const addItem = text => {
     if (!text) {
       return;
     }
 
-    state.todos.push({
-      text,
-      completed: false
-    });
+    state.todos = [...state.todos, { text, completed: false }];
   };
 
   const updateItem = (index, text) => {
@@ -36,19 +33,48 @@ export default (initialState = INITIAL_STATE) => {
       return;
     }
 
-    state.todos[index].text = text;
+    state.todos = state.todos.map((todo, i) => {
+      if (i === index) {
+        todo.text = text;
+      }
+      return todo;
+    });
   };
 
   const deleteItem = (index) => {
-    state.todos.splice(index, 1);
+    if (index < 0) {
+      return;
+    }
+
+    if (!state.todos[index]) {
+      return;
+    }
+
+    state.todos = state.todos.filter((todo, i) => i !== index);
   };
 
   const toggleItemCompleted = (index) => {
-    state.todos[index].completed = !state.todos[index].completed;
+    if (index < 0) {
+      return;
+    }
+
+    if (!state.todos[index]) {
+      return;
+    }
+
+    state.todos = state.todos.map((todo, i) => {
+      if (i === index) {
+        todo.completed = !todo.completed;
+      }
+      return todo;
+    });
   };
 
   const completeAll = () => {
-    state.todos.forEach(t => t.completed = true);
+    state.todos = state.todos.map(todo => {
+      todo.completed = true;
+      return todo;
+    });
   };
 
   const clearCompleted = () => {
@@ -59,7 +85,8 @@ export default (initialState = INITIAL_STATE) => {
     state.currentFilter = filter;
   };
 
-  const model = {
+  return {
+    addChangeListener: state.addChangeListener,
     addItem,
     updateItem,
     deleteItem,
@@ -68,6 +95,4 @@ export default (initialState = INITIAL_STATE) => {
     clearCompleted,
     changeFilter,
   };
-
-  return observableFactory(model, () => state);
 };

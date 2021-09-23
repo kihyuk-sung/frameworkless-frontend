@@ -6,7 +6,8 @@ import filtersView from './view/filters.js';
 import registry from './registry.js';
 import applyDiff from './applyDiff.js';
 import appView from './view/app.js';
-import stateFactory from './model/state.js';
+
+import actionsFactory from './model/state.js';
 
 performance.init();
 
@@ -25,28 +26,23 @@ const loadState = () => {
   return JSON.parse(serializedState);
 };
 
-const state = stateFactory(loadState());
-
-const {
-  addChangeListener,
-  ...events
-} = state;
+const actions = actionsFactory(loadState());
 
 const render = (state) => {
   window.requestAnimationFrame(() => {
     const main = document.querySelector('#root');
-    const newMain = registry.renderRoot(main, state, events);
+    const newMain = registry.renderRoot(main, state, actions);
     applyDiff(document.body, main, newMain);
   });
 };
 
-addChangeListener(render);
-addChangeListener(state => {
+actions.addChangeListener(render);
+actions.addChangeListener(state => {
   Promise.resolve().then(() => {
     window.localStorage.setItem('state', JSON.stringify(state));
   });
 });
 
-addChangeListener(state => {
+actions.addChangeListener(state => {
   console.log(`Current State (${(new Date())})`, state);
 });
