@@ -1,3 +1,25 @@
+const ROUTE_PARAMETER_REGEXP = /:(\w+)/g;
+const URL_FRAGMENT_REGEXP = '([^\\/]+)';
+
+const extractUrlParams = (route, windowHash) => {
+  const params = {};
+
+  if (route.params.length === 0) {
+    return params;
+  }
+
+  const matches = windowHash.match(route.testRegExp);
+
+  matches.shift();
+
+  matches.forEach((paramValue, index) => {
+    const paramName = route.params[index];
+    params[paramName] = paramValue;
+  });
+
+  return params;
+};
+
 export default () => {
   const routes = [];
   let notFound = () => { };
@@ -5,18 +27,25 @@ export default () => {
   const router = {};
 
   const checkRoutes = () => {
-    const currentRoute = routes.find(route => route.fragment === window.location.hash);
+    const { hash } = window.location;
+
+    const currentRoute = routes.find(route => {
+      const { testRegExp } = route;
+      return testRegExp.test(hash);
+    });
 
     if (!currentRoute) {
       notFound();
       return;
     }
 
-    currentRoute.component();
-  };
+    const urlParams = extractUrlParams(
+      currentRoute,
+      window.location.hash
+    );
 
-  const ROUTE_PARAMETER_REGEXP = /:(\w+)/g;
-  const URL_FRAGMENT_REGEXP = '([^\\/]+)';
+    currentRoute.component(urlParams);
+  };
 
   /**
    * @param {String} fragment 
@@ -34,7 +63,7 @@ export default () => {
       .replace(/\//g, '\\/');
 
     routes.push({
-      textRegExp = new RegExp(`^${parsedFragment}`),
+      testRegExp: new RegExp(`^${parsedFragment}$`),
       component,
       params
     });
