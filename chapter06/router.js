@@ -15,10 +15,28 @@ export default () => {
     currentRoute.component();
   };
 
+  const ROUTE_PARAMETER_REGEXP = /:(\w+)/g;
+  const URL_FRAGMENT_REGEXP = '([^\\/]+)';
+
+  /**
+   * @param {String} fragment 
+   * @param {*} component 
+   * @returns 
+   */
   router.addRoute = (fragment, component) => {
+    const params = [];
+
+    const parsedFragment = fragment
+      .replace(ROUTE_PARAMETER_REGEXP, (match, paramName) => {
+        params.push(paramName);
+        return URL_FRAGMENT_REGEXP;
+      })
+      .replace(/\//g, '\\/');
+
     routes.push({
-      fragment,
-      component
+      textRegExp = new RegExp(`^${parsedFragment}`),
+      component,
+      params
     });
 
     return router;
