@@ -12,9 +12,21 @@ export default container => {
     container.textContent = 'Page Not Found!';
   };
 
+  const detail = (params) => {
+    const { id } = params;
+    container.textContent = `This is Detail Page with Id ${id}`;
+  };
+
+  const anotherDetail = (params) => {
+    const { id, anotherId } = params;
+    container.textContent = `This is anther Detail Page with Id ${id} and AnotherId ${anotherId}`;
+  };
+
   return {
     home,
     list,
-    notFound
+    notFound,
+    detail,
+    anotherDetail
   };
 };
