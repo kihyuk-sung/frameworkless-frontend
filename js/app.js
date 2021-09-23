@@ -6,6 +6,9 @@ import filtersView from './view/filters.js';
 import registry from './registry.js';
 import applyDiff from './applyDiff.js';
 import appView from './view/app.js';
+import modelFactory from './model/model.js';
+
+const model = modelFactory();
 
 performance.init();
 
@@ -21,41 +24,36 @@ const state = {
 
 const events = {
   addItem: text => {
-    state.todos.push({
-      text,
-      completed: false
-    });
-    render();
+    model.addItem(text);
+    render(model.getState());
   },
   updateItem: (index, text) => {
-    state.todos[index].text = text;
-    render();
+    model.updateItem(index, text);
+    render(model.getState());
   },
   deleteItem: (index) => {
-    state.todos.splice(index, 1);
-    render();
+    model.deleteItem(index);
+    render(model.getState());
   },
   toggleItemCompleted: (index) => {
-    debugger;
-    const { completed } = state.todos[index];
-    state.todos[index].completed = !completed;
-    render();
+    model.toggleItemCompleted(index);
+    render(model.getState());
   },
   completeAll: () => {
-    state.todos.forEach(t => t.completed = true);
-    render();
+    model.completeAll();
+    render(model.getState());
   },
   clearCompleted: () => {
-    state.todos = state.todos.filter(t => !t.completed);
-    render();
+    model.clearCompleted();
+    render(model.getState());
   },
   changeFilter: filter => {
-    state.currentFilter = filter;
-    render();
+    model.changeFilter(filter);
+    render(model.getState());
   }
 };
 
-const render = () => {
+const render = (state) => {
   window.requestAnimationFrame(() => {
     const main = document.querySelector('#root');
     const newMain = registry.renderRoot(main, state, events);
@@ -63,4 +61,4 @@ const render = () => {
   });
 };
 
-render();
+render(model.getState());
